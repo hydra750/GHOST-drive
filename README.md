@@ -1,2 +1,2 @@
 # GHOST-drive
-A USB driveby program in Python.
+GHOST drive; the successor to my USB driveby prototype
