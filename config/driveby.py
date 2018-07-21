@@ -1,4 +1,4 @@
-import os, sys, ctypes, getpass, socket, subprocess, urllib.request, math, wmi, platform, datetime
+import os, sys, ctypes, getpass, socket, subprocess, urllib.request, math, wmi, platform, datetime, time
 exec(open("config.py").read())
 
 si = subprocess.STARTUPINFO()
@@ -29,8 +29,10 @@ os.chdir("payloads")
 if logging:
     fl = open(rootdir+"Log.txt", "w")
     d = datetime.datetime.now()
-    logstart = d.strftime(r"%d-%m-%Y at %I:%M %p")
-    fl.write("Started on: " + logstart)
+    start_time = time.time()
+    logstart1 = d.strftime(r"%d-%m-%Y -> %A, %d/%B/%Y")
+    logstart2 = d.strftime(r"%I:%M:%S %p")
+    fl.write("Started on:\n\n"+"Date: "+logstart1+"\nTime: "+logstart2)
     fl.close()
 
 
@@ -138,8 +140,15 @@ if sysinfo:
 # logging end
 if logging:
     fl = open(rootdir+"Log.txt", "a")
-    logend = d.strftime(r"%d-%m-%Y at %I:%M %p")
-    fl.write("\n\nFinished on: " + logend)
+    d2 = datetime.datetime.now()
+    end_time = time.time()
+    et = end_time - start_time
+    et = round(et)
+    elapsed_time = str(et)
+    logend1 = d2.strftime(r"%d-%m-%Y -> %A, %d/%B/%Y")
+    logend2 = d2.strftime(r"%I:%M:%S %p")
+    fl.write("\n\n\nFinished on:\n\n"+"Date: "+logend1+"\nTime: "+logend2)
+    fl.write("\n\nElapsed time: "+elapsed_time+" secs")
     fl.close()
 
 
