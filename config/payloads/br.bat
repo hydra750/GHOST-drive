@@ -39,5 +39,10 @@ set ip=%4
     netsh wlan show all
     echo.
     echo.
-    echo %inet% and %ip%
+    echo =======================================================================================
+    echo Internet state:
+    echo =======================================================================================
+    echo.
+    echo Connection: %3
+    echo IP address: %4
 )>%rootdir%"Batch recon.txt"

