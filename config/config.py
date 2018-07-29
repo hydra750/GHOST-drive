@@ -49,6 +49,16 @@ renew_net_adapters = 0
 flush_dns = 0
 register_dns = 0
 
+# ->ftp
+ftp = {
+    'controller': 0,
+    'host': "",
+    'port': 21,
+    'username': "",
+    'password': "",
+    'dir': ""
+}
+
 # ->file utilities
 injector = {
     'controller': 0,
@@ -62,7 +72,7 @@ retriever = {
     'path': ""
 }
 destroyer = {
-    'controller': 1,
+    'controller': 0,
     'var_case': 0,
     'var_case_dir': 0,
     'path': ""

