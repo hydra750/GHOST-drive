@@ -1,6 +1,7 @@
 import os, subprocess, shutil
 from termcolor import colored
-print(colored("\nGHOST drive flasher", "green", attrs=['underline'])+"\n\n")
+print(colored("\nGHOST drive flasher", "green", attrs=['underline']))
+print(colored("\nNOTE: briefly disable your anti-virus/anti-malware service while flashing", "blue")+"\n\n")
 
 try:
 	subprocess.Popen("pyinstaller", stdout=subprocess.PIPE, stderr=subprocess.PIPE)

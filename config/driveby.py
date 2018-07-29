@@ -264,6 +264,7 @@ if dns_poison['controller']:
 
 # logging end
 if logging:
+    os.chdir(cwd+"/payloads")
     fl = open(rootdir+"Log.txt", "w")
     d2 = datetime.datetime.now()
     end_time = time.time()

