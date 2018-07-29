@@ -1,5 +1,6 @@
 import os, subprocess, shutil
 from termcolor import colored
+print(colored("\nGHOST drive flasher", "green", attrs=['underline'])+"\n\n")
 
 try:
 	subprocess.Popen("pyinstaller", stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -65,11 +66,16 @@ os.system("rd /s /q __pycache__ build dist")
 os.system("del driveby.spec driveby.py flash.py compiler.bat")
 if not os.path.exists("hosts"):
 	os.makedirs("hosts")
+if not os.path.exists('stub'):
+	os.makedirs('stub')
 os.chdir("ext")
 if not os.path.exists("bin_retrieve"):
 	os.makedirs("bin_retrieve")
 if not os.path.exists("bin_inject"):
 	os.makedirs("bin_inject")
+if not os.path.exists('bin_exec'):
+	os.makedirs('bin_exec')
+
 os.chdir("../../")
 os.system("attrib +s +h config")
 print(colored("\n\nGHOST drive has been successfully flashed", "green"))

